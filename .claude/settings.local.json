@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(node --version)",
+      "PowerShell(npm --version)",
+      "mcp__Claude_Preview__preview_start",
+      "PowerShell($cmds = 'vercel','netlify','gh','firebase','wrangler'; foreach \\($c in $cmds\\) { $found = Get-Command $c -ErrorAction SilentlyContinue; if \\($found\\) { \"$c : $\\($found.Source\\)\" } else { \"$c : not installed\" } })",
+      "PowerShell($p = Start-Process npm -ArgumentList 'run','preview' -PassThru -WindowStyle Hidden; Start-Sleep -Seconds 4; try { $r = Invoke-WebRequest -Uri 'http://localhost:4173/' -UseBasicParsing; \"HTTP $\\($r.StatusCode\\), $\\($r.Content.Length\\) bytes\" } catch { \"FAILED: $_\" } finally { Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue; Get-Process node -ErrorAction SilentlyContinue | Where-Object { $_.StartTime -gt \\(Get-Date\\).AddSeconds\\(-10\\) } | Stop-Process -Force -ErrorAction SilentlyContinue })"
+    ]
+  }
+}

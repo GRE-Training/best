@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @apply bg-white text-ink font-sans text-body antialiased;
+  overscroll-behavior-y: none;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.page {
+  @apply animate-pageIn;
+  will-change: transform;
+}
+
+.tap-feedback {
+  transition: transform 150ms ease;
+}
+.tap-feedback:active {
+  transform: scale(0.97);
+}
+
+.katex {
+  font-size: 1.05em;
+}
+
+::placeholder {
+  @apply text-ink-tertiary;
+}
+
+input:focus,
+button:focus-visible {
+  outline: none;
+}
+button:focus-visible,
+a:focus-visible {
+  box-shadow: 0 0 0 2px #ebf2ff, 0 0 0 3.5px #0066ff;
+  border-radius: 12px;
+}
