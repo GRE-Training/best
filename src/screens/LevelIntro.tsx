@@ -72,7 +72,7 @@ export default function LevelIntro() {
 
       <div className="mt-5 flex items-center gap-4 text-small text-ink-secondary">
         <span className="flex items-center gap-1.5">
-          <ListChecks size={15} aria-hidden /> {bankSize(level.id)} problems · 5 per session
+          <ListChecks size={15} aria-hidden /> {bankSize(level.id)} problems · 8 per session
         </span>
         <span className="flex items-center gap-1.5">
           <Clock size={15} aria-hidden /> ~15 minutes

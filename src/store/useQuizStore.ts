@@ -7,7 +7,7 @@ type StepPhase = 'answering' | 'feedback';
 
 // Each session draws a random subset of the level's bank so retries
 // don't repeat the same questions, ordered easy → hard within the session.
-const SESSION_SIZE = 5;
+const SESSION_SIZE = 8;
 
 function sampleSession(all: Problem[]): Problem[] {
   const pool = [...all];
