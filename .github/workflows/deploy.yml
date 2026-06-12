@@ -29,6 +29,9 @@ jobs:
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
           VITE_SPREADSHEET_ID: ${{ secrets.VITE_SPREADSHEET_ID }}
 
+      - name: SPA fallback for client-side routes
+        run: cp dist/index.html dist/404.html
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
