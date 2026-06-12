@@ -204,11 +204,19 @@ export const EXTRA_PROBLEMS_1_TO_3: Problem[] = [
     difficulty: 2,
     questionText: 'Which of the following lies between $\\frac{1}{3}$ and $\\frac{1}{2}$: 0.25 · 0.30 · 0.40 · 0.55 ?',
     answer: '0.40',
-    hint: 'Convert the fractions to decimals first.',
+    hint: 'Convert the fractions to decimals by dividing the top number by the bottom.',
     steps: [
       {
+        label: 'Recall the method',
+        question: 'To convert a fraction to a decimal, divide the numerator (top) by the denominator (bottom). What is $\\frac{1}{5}$ as a decimal?',
+        choices: ['0.15', '0.20', '0.50', '5.0'],
+        correctIndex: 1,
+        explanation: '$1 \\div 5 = 0.2$. Top divided by bottom — that is the whole rule.',
+        why: 'Key fractions to know cold: $\\frac{1}{5}=0.2$, $\\frac{1}{4}=0.25$, $\\frac{1}{3}\\approx 0.333$, $\\frac{1}{2}=0.5$.',
+      },
+      {
         label: 'Convert the endpoints',
-        question: 'As decimals, $\\frac{1}{3}$ and $\\frac{1}{2}$ are…',
+        question: 'Using top ÷ bottom, $\\frac{1}{3}$ and $\\frac{1}{2}$ as decimals are…',
         choices: [
           'about 0.33 and 0.50',
           '0.13 and 0.12',
@@ -216,7 +224,7 @@ export const EXTRA_PROBLEMS_1_TO_3: Problem[] = [
           '0.66 and 0.50',
         ],
         correctIndex: 0,
-        explanation: '$\\frac{1}{3} \\approx 0.333$ and $\\frac{1}{2} = 0.5$.',
+        explanation: '$1 \\div 3 \\approx 0.333$ and $1 \\div 2 = 0.5$.',
         why: 'A shared decimal scale makes “between” questions trivial.',
       },
       {

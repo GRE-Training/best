@@ -122,11 +122,19 @@ export const SEED_PROBLEMS: Problem[] = [
     difficulty: 2,
     questionText: 'Which of the following is the largest: $\\frac{2}{3}$, $0.6$, $\\frac{5}{8}$, $\\frac{13}{20}$ ?',
     answer: '$\\frac{2}{3}$',
-    hint: 'Convert everything to decimals — it makes comparison instant.',
+    hint: 'Convert every fraction to a decimal by dividing the top number by the bottom — then comparison is instant.',
     steps: [
       {
+        label: 'Learn the method',
+        question: 'To convert a fraction to a decimal, divide the top number (numerator) by the bottom number (denominator). Using that rule, $\\frac{3}{4}$ as a decimal is…',
+        choices: ['0.34', '0.43', '0.75', '1.33'],
+        correctIndex: 2,
+        explanation: '$3 \\div 4 = 0.75$. That is the whole rule: numerator ÷ denominator.',
+        why: 'Common fractions to memorize: $\\frac{1}{2}=0.5$, $\\frac{1}{4}=0.25$, $\\frac{3}{4}=0.75$, $\\frac{1}{3}\\approx 0.333$, $\\frac{1}{8}=0.125$, $\\frac{1}{5}=0.2$.',
+      },
+      {
         label: 'Convert the fractions',
-        question: 'As decimals, $\\frac{2}{3}$, $\\frac{5}{8}$ and $\\frac{13}{20}$ are approximately…',
+        question: 'Using top ÷ bottom, $\\frac{2}{3}$, $\\frac{5}{8}$ and $\\frac{13}{20}$ as decimals are approximately…',
         choices: [
           '0.667, 0.625, 0.65',
           '0.6, 0.58, 0.65',
@@ -134,8 +142,8 @@ export const SEED_PROBLEMS: Problem[] = [
           '0.667, 0.675, 0.62',
         ],
         correctIndex: 0,
-        explanation: '$\\frac{2}{3} \\approx 0.667$, $\\frac{5}{8} = 0.625$, $\\frac{13}{20} = 0.65$.',
-        why: 'Knowing common fraction–decimal pairs by heart ($\\frac{1}{8} = 0.125$, $\\frac{1}{3} \\approx 0.333$) saves enormous time.',
+        explanation: '$2 \\div 3 \\approx 0.667$, $5 \\div 8 = 0.625$, $13 \\div 20 = 0.65$.',
+        why: 'Once you can do this automatically, any mixed fraction/decimal question becomes a mechanical sort.',
       },
       {
         label: 'Compare',
@@ -143,7 +151,7 @@ export const SEED_PROBLEMS: Problem[] = [
         choices: ['$0.6$', '$\\frac{5}{8}$', '$\\frac{13}{20}$', '$\\frac{2}{3}$'],
         correctIndex: 3,
         explanation: 'Comparing 0.667, 0.6, 0.625 and 0.65 — the largest is $0.667 = \\frac{2}{3}$.',
-        why: 'On a common scale (decimals), comparison becomes mechanical instead of intuitive.',
+        why: 'On a common decimal scale, comparison becomes mechanical instead of intuitive.',
       },
     ],
   },
