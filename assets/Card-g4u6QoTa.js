@@ -1,0 +1,1 @@
+import{j as d}from"./index-DPhK8B43.js";function t({className:r="",children:e,...o}){return d.jsx("div",{className:`rounded-card border border-border bg-white p-5 ${r}`,...o,children:e})}export{t as C};
