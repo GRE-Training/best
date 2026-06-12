@@ -1,0 +1,6 @@
+import{c as u,j as s}from"./index-BXUGxsZc.js";/**
+ * @license lucide-react v0.460.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const p=u("ChevronDown",[["path",{d:"m6 9 6 6 6-6",key:"qrunsl"}]]),l="gre-sound-enabled";function d(){return localStorage.getItem(l)==="1"}function x(n){localStorage.setItem(l,n?"1":"0")}let t=null;function o(n,a,i="sine",r=.04){if(d())try{t??(t=new AudioContext);const e=t.createOscillator(),c=t.createGain();e.type=i,e.frequency.value=n,c.gain.setValueAtTime(r,t.currentTime),c.gain.exponentialRampToValueAtTime(1e-4,t.currentTime+a/1e3),e.connect(c).connect(t.destination),e.start(),e.stop(t.currentTime+a/1e3)}catch{}}const f={tap:()=>o(660,60),correct:()=>{o(740,120),setTimeout(()=>o(988,160),90)},wrong:()=>o(220,220,"sine",.05)};function g({open:n,title:a,children:i,onClose:r}){return n?s.jsx("div",{className:"fixed inset-0 z-50 flex items-end justify-center bg-ink/40 p-4 sm:items-center",onClick:r,role:"dialog","aria-modal":"true","aria-label":a,children:s.jsxs("div",{className:"w-full max-w-sm animate-slideUp rounded-card bg-white p-6",onClick:e=>e.stopPropagation(),children:[s.jsx("h2",{className:"text-h2 text-ink",children:a}),s.jsx("div",{className:"mt-3",children:i})]})}):null}export{p as C,g as M,d as a,x as b,f as s};

@@ -1,0 +1,11 @@
+import{c as i,j as e}from"./index-BXUGxsZc.js";import{P as l}from"./Pill-BZHfsdAK.js";import{P as x}from"./ProgressBar-DgGes-8c.js";import{C as m}from"./check-BhKUWiP7.js";/**
+ * @license lucide-react v0.460.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const h=i("Lock",[["rect",{width:"18",height:"11",x:"3",y:"11",rx:"2",ry:"2",key:"1w4ew1"}],["path",{d:"M7 11V7a5 5 0 0 1 10 0v4",key:"fwvmzm"}]]);/**
+ * @license lucide-react v0.460.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const u=i("Play",[["polygon",{points:"6 3 20 12 6 21 6 3",key:"1oa8hb"}]]);function j({level:s,progress:r,onOpen:o}){const n=String(s.id),t=r.unlockedLevels.includes(s.id),a=!!r.completedLevels[n],c=r.levelScores[n],d=a?"border-l-4 border-l-success":t?"border-l-4 border-l-accent":"";return e.jsxs("button",{onClick:()=>t&&o(s.id),disabled:!t,"aria-label":`Level ${s.id}: ${s.name}${t?"":" (locked)"}`,className:`tap-feedback w-full rounded-card border border-border bg-white p-5 text-left ${d} ${t?"":"opacity-40"}`,children:[e.jsxs("div",{className:"flex items-center gap-4",children:[e.jsx("span",{className:"flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[15px] font-semibold text-white",style:{background:s.color},"aria-hidden":!0,children:s.id}),e.jsxs("span",{className:"min-w-0 flex-1",children:[e.jsxs("span",{className:"flex items-center gap-2",children:[e.jsx("span",{className:"text-h3 text-ink",children:s.name}),e.jsx(l,{color:"neutral",children:s.greBand})]}),e.jsx("span",{className:"mt-0.5 block truncate text-small text-ink-secondary",children:s.subtitle})]}),e.jsxs("span",{className:"flex shrink-0 items-center gap-2 text-ink-tertiary",children:[c!==void 0&&e.jsxs("span",{className:`text-h3 ${a?"text-success":"text-ink"}`,children:[c,"%"]}),a?e.jsx(m,{size:18,className:"text-success","aria-hidden":!0}):t?e.jsx(u,{size:18,className:"text-accent","aria-hidden":!0}):e.jsx(h,{size:16,"aria-hidden":!0})]})]}),t&&e.jsx(x,{className:"mt-3",value:c!==void 0?Math.min(100,c/s.passThreshold*100):0,color:a?"#00875A":"#0066FF"})]})}export{j as L};
