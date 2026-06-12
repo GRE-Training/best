@@ -5,6 +5,19 @@ import { useAuthStore } from './useAuthStore';
 
 type StepPhase = 'answering' | 'feedback';
 
+// Each session draws a random subset of the level's bank so retries
+// don't repeat the same questions, ordered easy → hard within the session.
+const SESSION_SIZE = 5;
+
+function sampleSession(all: Problem[]): Problem[] {
+  const pool = [...all];
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, Math.min(SESSION_SIZE, pool.length)).sort((a, b) => a.difficulty - b.difficulty);
+}
+
 interface QuizState {
   levelId: number | null;
   mode: QuizMode;
@@ -59,9 +72,9 @@ export const useQuizStore = create<QuizState>((set, get) => ({
     set({ ...initial, levelId, mode, loading: true, startedAt: Date.now() });
     try {
       const token = useAuthStore.getState().accessToken;
-      const problems = await fetchProblems(token, levelId);
-      if (!problems.length) throw new Error('no problems');
-      set({ problems, loading: false });
+      const bank = await fetchProblems(token, levelId);
+      if (!bank.length) throw new Error('no problems');
+      set({ problems: sampleSession(bank), loading: false });
     } catch {
       set({ loading: false, loadError: true });
     }

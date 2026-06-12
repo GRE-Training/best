@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, Clock, ListChecks } from 'lucide-react';
 import { getLevel } from '../data/levels';
+import { bankSize } from '../data/problemBank';
 import { useProgressStore } from '../store/useProgressStore';
 import { useQuizStore } from '../store/useQuizStore';
 import { formatShortDate } from '../utils/formatting';
@@ -71,12 +72,15 @@ export default function LevelIntro() {
 
       <div className="mt-5 flex items-center gap-4 text-small text-ink-secondary">
         <span className="flex items-center gap-1.5">
-          <ListChecks size={15} aria-hidden /> {level.problemCount} problems
+          <ListChecks size={15} aria-hidden /> {bankSize(level.id)} problems · 5 per session
         </span>
         <span className="flex items-center gap-1.5">
           <Clock size={15} aria-hidden /> ~15 minutes
         </span>
       </div>
+      <p className="mt-2 text-small text-ink-tertiary">
+        Each attempt draws a fresh random set, so you can retry without repeats.
+      </p>
 
       {bestScore !== undefined && (
         <Card className="mt-5 flex items-center justify-between p-4">

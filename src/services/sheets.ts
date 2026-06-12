@@ -1,5 +1,5 @@
 import type { Problem, Step } from '../types';
-import { SEED_PROBLEMS } from '../data/seedProblems';
+import { PROBLEMS } from '../data/problemBank';
 import { cacheGet, cacheSet } from '../utils/cache';
 
 const SHEETS_API = 'https://sheets.googleapis.com/v4/spreadsheets';
@@ -46,7 +46,7 @@ export async function fetchProblems(
     }
   }
 
-  return SEED_PROBLEMS.filter((p) => p.level === levelId);
+  return PROBLEMS.filter((p) => p.level === levelId);
 }
 
 function parseProblems(rows: string[][], levelId: number): Problem[] {
