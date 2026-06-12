@@ -247,22 +247,41 @@ export default function Quiz() {
             ))}
           </div>
 
-          {/* Hint */}
-          {!isFeedback &&
-            (quiz.hintShown ? (
-              <div className="mt-4 rounded-btn bg-warning-bg px-4 py-3">
-                <MathText text={problem.hint} className="text-small text-warning" />
-                <p className="mt-1 text-[11px] text-warning/70">Hint used — this step counts for half credit.</p>
-              </div>
-            ) : (
-              <button
-                onClick={quiz.showHint}
-                className="mt-4 flex items-center gap-1.5 text-small text-ink-secondary"
-              >
-                <Lightbulb size={15} aria-hidden />
-                Show hint
-              </button>
-            ))}
+          {/* Hint + Skip row */}
+          {!isFeedback && (
+            <>
+              {quiz.hintShown ? (
+                <div className="mt-4 rounded-btn bg-warning-bg px-4 py-3">
+                  <MathText text={problem.hint} className="text-small text-warning" />
+                  <p className="mt-1 text-[11px] text-warning/70">Hint used — this step counts for half credit.</p>
+                </div>
+              ) : (
+                <div className="mt-4 flex items-center justify-between">
+                  <button
+                    onClick={quiz.showHint}
+                    className="flex items-center gap-1.5 text-small text-ink-secondary"
+                  >
+                    <Lightbulb size={15} aria-hidden />
+                    Show hint
+                  </button>
+                  <button
+                    onClick={quiz.skip}
+                    className="text-small text-ink-tertiary"
+                  >
+                    Skip problem →
+                  </button>
+                </div>
+              )}
+              {quiz.hintShown && (
+                <button
+                  onClick={quiz.skip}
+                  className="mt-3 w-full text-right text-small text-ink-tertiary"
+                >
+                  Skip problem →
+                </button>
+              )}
+            </>
+          )}
 
           {/* Feedback */}
           {isFeedback && lastResult && (

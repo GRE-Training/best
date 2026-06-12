@@ -40,6 +40,7 @@ interface QuizState {
   choose: (index: number) => void;
   showHint: () => void;
   continueNext: () => void;
+  skip: () => void;
   toggleFocus: () => void;
   reset: () => void;
 
@@ -116,6 +117,16 @@ export const useQuizStore = create<QuizState>((set, get) => ({
         chosenIndex: null,
         hintShown: false,
       });
+    } else {
+      set({ finished: true });
+    }
+  },
+
+  skip: () => {
+    const s = get();
+    if (s.phase !== 'answering' || s.finished) return;
+    if (s.problemIndex + 1 < s.problems.length) {
+      set({ problemIndex: s.problemIndex + 1, stepIndex: 0, phase: 'answering', chosenIndex: null, hintShown: false });
     } else {
       set({ finished: true });
     }
