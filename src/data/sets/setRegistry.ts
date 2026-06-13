@@ -1,4 +1,3 @@
-```typescript
 import type { ProblemSet } from '../../types';
 import { DAILY_WARMUP } from './set.daily-warmup';
 import { CORE_GRE_MIX } from './set.core-gre-mix';
@@ -29,4 +28,3 @@ export const PROBLEM_SETS: ProblemSet[] = [
   LEVEL6_BANK,
   LEVEL7_BANK,
 ];
-```
