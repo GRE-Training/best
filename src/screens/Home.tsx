@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Settings as SettingsIcon, TrendingUp, Flame } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
@@ -10,6 +11,7 @@ import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import ProgressBar from '../components/ui/ProgressBar';
 import LevelCard from '../components/LevelCard';
+import { PROBLEM_SETS } from '../data/sets/setRegistry';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -23,6 +25,8 @@ export default function Home() {
   const accuracy = overallAccuracy(progress);
   const levelsDone = Object.keys(progress.completedLevels).length;
   const improving = progress.history.length >= 2 && progress.history[0].score > progress.history[1].score;
+
+  const [tab, setTab] = useState<'journey' | 'sets'>('journey');
 
   const midLevel =
     quiz.levelId !== null && !quiz.finished && quiz.results.length > 0
@@ -90,17 +94,76 @@ export default function Home() {
       )}
 
       <section className="mt-8">
-        <p className="text-label uppercase text-ink-secondary">Your journey</p>
-        <div className="mt-3 space-y-3">
-          {LEVELS.map((level) => (
-            <LevelCard
-              key={level.id}
-              level={level}
-              progress={progress}
-              onOpen={(id) => navigate(`/level/${id}`)}
-            />
-          ))}
+        <div className="flex border-b border-border">
+          <button
+            onClick={() => setTab('journey')}
+            className={`pb-2.5 pr-6 text-small font-semibold transition-colors ${
+              tab === 'journey'
+                ? 'border-b-2 border-accent text-accent'
+                : 'text-ink-tertiary'
+            }`}
+          >
+            Journey
+          </button>
+          <button
+            onClick={() => setTab('sets')}
+            className={`pb-2.5 px-6 text-small font-semibold transition-colors ${
+              tab === 'sets'
+                ? 'border-b-2 border-accent text-accent'
+                : 'text-ink-tertiary'
+            }`}
+          >
+            Sets
+          </button>
         </div>
+
+        {tab === 'journey' ? (
+          <div className="mt-3 space-y-3">
+            {LEVELS.map((level) => (
+              <LevelCard
+                key={level.id}
+                level={level}
+                progress={progress}
+                onOpen={(id) => navigate(`/level/${id}`)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="mt-3 space-y-3">
+            {PROBLEM_SETS.map((s) => (
+              <button
+                key={s.id}
+                onClick={() => {
+                  void quiz.start(null, 'set', s.id);
+                  navigate('/quiz');
+                }}
+                className="w-full rounded-card border border-border bg-white p-4 text-left tap-feedback"
+              >
+                <div className="flex items-start gap-3">
+                  <span className="mt-0.5 text-2xl leading-none">{s.icon}</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-h3 text-ink">{s.name}</p>
+                    <p className="mt-1 text-small text-ink-secondary">{s.description}</p>
+                    <div className="mt-1.5 flex items-center gap-2 text-[11px] text-ink-tertiary">
+                      <span>{s.problems.length} problems</span>
+                      {s.targetBand && <span>· {s.targetBand}</span>}
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {s.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full bg-accent-bg px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.05em] text-accent"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

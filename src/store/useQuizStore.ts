@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { Problem, QuizMode, StepResult } from '../types';
 import { fetchProblems } from '../services/sheets';
+import { PROBLEM_SETS } from '../data/sets/setRegistry';
 import { useAuthStore } from './useAuthStore';
 
 type StepPhase = 'answering' | 'feedback';
@@ -35,8 +36,9 @@ interface QuizState {
   startedAt: number;
   finished: boolean;
   focusMode: boolean;
+  setId: string | null;
 
-  start: (levelId: number, mode: QuizMode) => Promise<void>;
+  start: (levelId: number | null, mode: QuizMode, setId?: string) => Promise<void>;
   choose: (index: number) => void;
   showHint: () => void;
   continueNext: () => void;
@@ -64,17 +66,25 @@ const initial = {
   startedAt: 0,
   finished: false,
   focusMode: false,
+  setId: null as string | null,
 };
 
 export const useQuizStore = create<QuizState>((set, get) => ({
   ...initial,
 
-  start: async (levelId, mode) => {
-    set({ ...initial, levelId, mode, loading: true, startedAt: Date.now() });
+  start: async (levelId, mode, setId) => {
+    set({ ...initial, levelId: levelId ?? null, mode, setId: setId ?? null, loading: true, startedAt: Date.now() });
     try {
-      const token = useAuthStore.getState().accessToken;
-      const bank = await fetchProblems(token, levelId);
-      if (!bank.length) throw new Error('no problems');
+      let bank: Problem[];
+      if (setId) {
+        const ps = PROBLEM_SETS.find((s) => s.id === setId);
+        if (!ps?.problems.length) throw new Error('no problems');
+        bank = ps.problems;
+      } else {
+        const token = useAuthStore.getState().accessToken;
+        bank = await fetchProblems(token, levelId!);
+        if (!bank.length) throw new Error('no problems');
+      }
       set({ problems: sampleSession(bank), loading: false });
     } catch {
       set({ loading: false, loadError: true });

@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Check, Clock, Lightbulb, ListChecks, Sparkles } from 'lucide-react';
 import { useQuizStore } from '../store/useQuizStore';
 import { getLevel } from '../data/levels';
+import { PROBLEM_SETS } from '../data/sets/setRegistry';
 import { stepPoints } from '../utils/scoring';
 import { formatDuration } from '../utils/formatting';
 import Button from '../components/ui/Button';
@@ -22,13 +23,16 @@ export default function Results() {
   const quiz = useQuizStore();
   const outcome = (location.state as Outcome | null) ?? { score: 0, passed: false, unlockedNext: false };
 
-  const level = quiz.levelId !== null ? getLevel(quiz.levelId) : null;
-  if (!level || !quiz.results.length) {
+  const isSet = quiz.mode === 'set';
+  const level = !isSet && quiz.levelId !== null ? getLevel(quiz.levelId) : null;
+  const activeSet = isSet ? PROBLEM_SETS.find((s) => s.id === quiz.setId) ?? null : null;
+
+  if ((!isSet && !level) || !quiz.results.length) {
     navigate('/', { replace: true });
     return null;
   }
 
-  const nextLevel = getLevel(level.id + 1);
+  const nextLevel = level ? getLevel(level.id + 1) : null;
   const correct = quiz.results.filter((r) => r.correct).length;
   const hints = quiz.results.filter((r) => r.usedHint).length;
   const duration = Math.round((Date.now() - quiz.startedAt) / 1000);
@@ -45,7 +49,11 @@ export default function Results() {
   }
 
   const retry = () => {
-    void quiz.start(level.id, quiz.mode);
+    if (isSet) {
+      void quiz.start(null, 'set', quiz.setId!);
+    } else {
+      void quiz.start(level!.id, quiz.mode);
+    }
     navigate('/quiz', { replace: true });
   };
 
@@ -60,17 +68,18 @@ export default function Results() {
 
       <div className="text-center">
         <p className="text-label uppercase text-ink-secondary">
-          Level {level.id} · {level.name}
-          {practice ? ' · Practice' : ''}
+          {isSet
+            ? `${activeSet?.icon ?? '📚'} ${activeSet?.name ?? 'Problem Set'}`
+            : `Level ${level!.id} · ${level!.name}${practice ? ' · Practice' : ''}`}
         </p>
-        <p className={`mt-3 text-[64px] font-semibold leading-none ${outcome.passed || practice ? 'text-accent' : 'text-error'}`}>
+        <p className={`mt-3 text-[64px] font-semibold leading-none ${outcome.passed || practice || isSet ? 'text-accent' : 'text-error'}`}>
           {outcome.score}%
         </p>
-        <p className={`mt-3 text-h2 ${outcome.passed ? 'text-success' : practice ? 'text-ink-secondary' : 'text-error'}`}>
-          {practice ? 'Practice complete' : outcome.passed ? 'Passed ✓' : 'Try again'}
+        <p className={`mt-3 text-h2 ${isSet ? 'text-accent' : outcome.passed ? 'text-success' : practice ? 'text-ink-secondary' : 'text-error'}`}>
+          {isSet ? 'Session complete' : practice ? 'Practice complete' : outcome.passed ? 'Passed ✓' : 'Try again'}
         </p>
-        {!practice && !outcome.passed && (
-          <p className="mt-1 text-small text-ink-tertiary">You need {level.passThreshold}% to pass</p>
+        {!practice && !isSet && !outcome.passed && (
+          <p className="mt-1 text-small text-ink-tertiary">You need {level!.passThreshold}% to pass</p>
         )}
       </div>
 
@@ -108,7 +117,7 @@ export default function Results() {
 
       <div className="mt-auto flex gap-3 pt-8">
         <Button variant="secondary" full onClick={retry}>
-          Retry Level
+          {isSet ? 'Replay Set' : 'Retry Level'}
         </Button>
         <Button full onClick={done}>
           Back to Levels

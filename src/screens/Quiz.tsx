@@ -5,6 +5,7 @@ import { useQuizStore } from '../store/useQuizStore';
 import { useProgressStore } from '../store/useProgressStore';
 import { getLevel } from '../data/levels';
 import { sounds } from '../utils/sound';
+import { PROBLEM_SETS } from '../data/sets/setRegistry';
 import MathText from '../components/MathText';
 import ChoiceButton from '../components/quiz/ChoiceButton';
 import Button from '../components/ui/Button';
@@ -64,25 +65,28 @@ export default function Quiz() {
   const [exitModal, setExitModal] = useState(false);
   const recorded = useRef(false);
 
-  const level = quiz.levelId !== null ? getLevel(quiz.levelId) : null;
+  const isSet = quiz.mode === 'set';
+  const level = !isSet && quiz.levelId !== null ? getLevel(quiz.levelId) : null;
+  const activeSet = isSet ? PROBLEM_SETS.find((s) => s.id === quiz.setId) ?? null : null;
   const problem = quiz.problems[quiz.problemIndex];
 
   // Record the session exactly once when the last step completes.
   useEffect(() => {
-    if (!quiz.finished || recorded.current || quiz.levelId === null) return;
+    if (!quiz.finished || recorded.current) return;
+    if (quiz.mode !== 'set' && quiz.levelId === null) return;
     recorded.current = true;
     const outcome = recordSession({
-      levelId: quiz.levelId,
+      levelId: quiz.mode === 'set' ? 0 : quiz.levelId!,
       results: quiz.results,
       topics: [...new Set(quiz.problems.map((p) => p.topic))],
       perTopic: quiz.perTopic,
       durationSeconds: Math.round((Date.now() - quiz.startedAt) / 1000),
-      practice: quiz.mode === 'practice',
+      practice: quiz.mode !== 'level',
     });
     navigate('/results', { state: outcome, replace: true });
   }, [quiz.finished]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (quiz.levelId === null || !level) {
+  if (!isSet && (quiz.levelId === null || !level)) {
     return (
       <div className="page mx-auto max-w-md px-5 pt-16 text-center">
         <p className="text-body text-ink-secondary">No active session.</p>
@@ -105,7 +109,7 @@ export default function Quiz() {
     return (
       <div className="page mx-auto max-w-md px-5 pt-16 text-center">
         <p className="text-body text-ink">Couldn’t load problems. Check your connection.</p>
-        <Button className="mt-4" onClick={() => void quiz.start(quiz.levelId!, quiz.mode)}>
+        <Button className="mt-4" onClick={() => void quiz.start(quiz.levelId, quiz.mode, quiz.setId ?? undefined)}>
           Retry
         </Button>
       </div>
@@ -150,10 +154,15 @@ export default function Quiz() {
         </button>
         {!quiz.focusMode && (
           <span className="text-[13px] text-ink-secondary">
-            {level.name}
+            {isSet ? (activeSet?.name ?? 'Set') : level!.name}
             {quiz.mode === 'practice' && (
               <Pill color="blue" className="ml-2">
                 Practice
+              </Pill>
+            )}
+            {isSet && (
+              <Pill color="blue" className="ml-2">
+                Set
               </Pill>
             )}
           </span>

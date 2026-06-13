@@ -30,6 +30,16 @@ export interface LevelDef {
   topics: string[];
 }
 
+export interface ProblemSet {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  tags: string[];
+  targetBand?: string;
+  problems: Problem[];
+}
+
 export interface TopicStat {
   correct: number;
   attempted: number;
@@ -76,7 +86,7 @@ export interface User {
   demo?: boolean;
 }
 
-export type QuizMode = 'level' | 'practice';
+export type QuizMode = 'level' | 'practice' | 'set';
 
 export interface StepResult {
   correct: boolean;
